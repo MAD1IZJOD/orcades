@@ -776,3 +776,139 @@
     transform: translateZ(calc(var(--z) * 0.5px));
   }
 }
+
+/* ------------------------------------------------------------------
+   visual 02 — software flow
+   ------------------------------------------------------------------ */
+
+.sf {
+  width: min(100%, 580px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sf__steps {
+  display: flex;
+  gap: 0.5rem;
+}
+.sf__steps button {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.sf__steps button:hover {
+  border-color: var(--c-fg);
+}
+.sf__steps button.is-on {
+  background: var(--c-fg);
+  color: var(--c-bg);
+  border-color: var(--c-fg);
+}
+.sf__steps .t-label {
+  font-size: 0.62rem;
+  opacity: 0.6;
+}
+
+.sf__stage {
+  position: relative;
+  aspect-ratio: 5 / 4;
+  border-radius: 18px;
+  border: 1px solid var(--c-line);
+  background:
+    radial-gradient(circle, var(--c-line) 1px, transparent 1.4px) 0 0 / 22px 22px;
+  padding: 0;
+  overflow: hidden;
+}
+.sf__frame {
+  position: absolute;
+  inset: 6%;
+}
+
+.sf__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.sf__lines line {
+  stroke: var(--c-fg);
+  stroke-width: 0.35;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+}
+
+.sf__block {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+.sf__block--5 {
+  background: var(--volt);
+  color: var(--ink);
+}
+.sf__stage.is-idea .sf__block--0 {
+  background: var(--ink);
+  animation: sf-pulse 1.8s ease-in-out infinite;
+}
+@keyframes sf-pulse {
+  50% {
+    box-shadow: 0 0 0 14px rgba(13, 12, 10, 0.08);
+  }
+}
+
+.sf__label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.58rem, 0.75vw, 0.72rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.sf__stage.is-idea .sf__block--0 .sf__label {
+  position: absolute;
+  left: 115%;
+  color: var(--c-fg);
+  overflow: visible;
+}
+.sf__stage.is-idea .sf__block--0 {
+  overflow: visible;
+}
+.sf__stage.is-product .sf__block--1 .sf__label,
+.sf__stage.is-product .sf__block--2 .sf__label,
+.sf__stage.is-product .sf__block--3 .sf__label {
+  place-self: start;
+  margin: 0.8rem;
+  opacity: 0.7;
+}
+
+.sf__chart {
+  position: absolute;
+  inset: 22% 6% 14%;
+  width: 88%;
+  height: 64%;
+  opacity: 0;
+  transition: opacity 0.5s 0.6s;
+}
+.sf__chart polyline {
+  fill: none;
+  stroke: var(--volt);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.sf__stage.is-product .sf__chart {
+  opacity: 1;
+}
