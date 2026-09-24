@@ -234,3 +234,73 @@
     display: none;
   }
 }
+
+/* ------------------------------------------------------------------
+   manifesto — REALIZE
+   ------------------------------------------------------------------ */
+
+.manifesto {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.manifesto__pin {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1.5rem, 4vh, 3rem);
+  padding-block: 12vh;
+}
+
+.manifesto__text {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 5.6vw, 5.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  max-width: 16ch;
+}
+.manifesto__first,
+.manifesto__second {
+  display: block;
+}
+.manifesto__first {
+  font-weight: 300;
+  margin-bottom: 0.25em;
+}
+
+.manifesto__keyword {
+  position: relative;
+  display: inline-block;
+  color: var(--volt);
+  font-weight: 800;
+}
+.manifesto__mark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.02em;
+  height: 0.08em;
+  background: var(--volt);
+  transform-origin: left;
+}
+
+.manifesto__coda {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  .manifesto__coda {
+    align-self: flex-start;
+    text-align: left;
+  }
+}
