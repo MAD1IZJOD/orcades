@@ -1,0 +1,23 @@
+/* ------------------------------------------------------------------
+   3D scene
+   ------------------------------------------------------------------ */
+
+.scene3d {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scene);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease-out);
+  /* fallback atmosphere when WebGL isn't there */
+  background:
+    radial-gradient(60% 50% at 50% 45%, rgba(201, 255, 59, 0.06), transparent 70%),
+    var(--ink);
+}
+.scene3d.is-ready {
+  opacity: 1;
+}
+.scene3d canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
