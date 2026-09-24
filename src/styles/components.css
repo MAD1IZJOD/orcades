@@ -1203,3 +1203,387 @@
 .chapter--paper :focus-visible {
   outline-color: var(--ink);
 }
+
+/* ------------------------------------------------------------------
+   work — concept studies (TRUST)
+   ------------------------------------------------------------------ */
+
+.work {
+  position: relative;
+  background: var(--ink);
+  overflow: clip;
+}
+
+.work__head {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: clamp(3rem, 8vh, 6rem);
+}
+
+.work__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-display);
+  line-height: 0.88;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+.work__title em {
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--volt);
+}
+
+.work__disclaimer {
+  max-width: 44ch;
+  border-left: 2px solid var(--volt);
+  padding-left: 1rem;
+}
+
+.work__list {
+  border-top: 1px solid var(--line);
+}
+
+.work__item {
+  border-bottom: 1px solid var(--line);
+}
+
+.work__row {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'num toggle'
+    'name toggle'
+    'line toggle';
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  padding: clamp(1.5rem, 4vh, 2.75rem) 0;
+  text-align: left;
+}
+
+.work__num {
+  grid-area: num;
+  color: var(--muted);
+}
+
+.work__name {
+  grid-area: name;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 6.2vw, 6.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  transition: color 0.4s, transform 0.6s var(--ease-out);
+}
+
+.work__line {
+  grid-area: line;
+  color: var(--muted);
+  font-size: var(--fs-body);
+}
+
+.work__toggle {
+  grid-area: toggle;
+  position: relative;
+  width: clamp(2.6rem, 4vw, 3.6rem);
+  aspect-ratio: 1;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transition: background 0.3s, border-color 0.3s, transform 0.5s var(--ease-out);
+}
+.work__toggle::before,
+.work__toggle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 36%;
+  height: 1.5px;
+  background: currentColor;
+  translate: -50% -50%;
+  transition: rotate 0.5s var(--ease-out);
+}
+.work__toggle::after {
+  rotate: 90deg;
+}
+
+@media (hover: hover) {
+  .work__row:hover .work__name {
+    color: var(--volt);
+    transform: translateX(1.5rem);
+  }
+}
+.work__row:focus-visible .work__name {
+  color: var(--volt);
+}
+.work__item.is-open .work__toggle {
+  background: var(--volt);
+  border-color: var(--volt);
+  color: var(--ink);
+  transform: rotate(180deg);
+}
+.work__item.is-open .work__toggle::after {
+  rotate: 0deg;
+}
+
+/* expanding detail — grid rows trick, no measuring */
+.work__detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.7s var(--ease-out);
+}
+.work__item.is-open .work__detail {
+  grid-template-rows: 1fr;
+}
+.work__detail-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.work__item:not(.is-open) .work__detail-inner {
+  visibility: hidden;
+  transition: visibility 0s 0.7s;
+}
+
+.work__cols {
+  display: grid;
+  gap: 2rem;
+  padding-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+.work__cols .t-label {
+  margin-bottom: 0.75rem;
+}
+.work__idea {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  max-width: 38ch;
+}
+.work__build li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.work__build li::before {
+  content: '+ ';
+  color: var(--volt);
+}
+.work__stack {
+  margin-top: 1rem;
+  color: var(--volt);
+}
+
+.work__art-inline {
+  width: min(100%, 420px);
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 900px) {
+  .work__row {
+    grid-template-columns: 9rem 1fr auto;
+    grid-template-areas:
+      'num name toggle'
+      'num line toggle';
+  }
+  .work__num {
+    align-self: start;
+    padding-top: 0.8rem;
+  }
+  .work__cols {
+    grid-template-columns: 1fr 1fr;
+    padding-left: 9rem;
+  }
+  .work__art-inline {
+    display: none;
+  }
+}
+
+/* the floating preview ---------------------------------------------- */
+
+.work__preview {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: clamp(240px, 22vw, 340px);
+  aspect-ratio: 4 / 3;
+  pointer-events: none;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ink-3);
+  border: 1px solid var(--line-strong);
+  clip-path: inset(50% 50% 50% 50% round var(--radius));
+  transition: clip-path 0.55s var(--ease-out);
+}
+.work__preview.is-visible {
+  clip-path: inset(0 0 0 0 round var(--radius));
+}
+.work__preview-frame {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 0.4s, transform 0.7s var(--ease-out);
+}
+.work__preview-frame.is-current {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .work__preview {
+    display: none;
+  }
+  .work__art-inline {
+    display: block;
+  }
+}
+
+/* concept art -------------------------------------------------------- */
+
+.art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(80% 70% at 50% 100%, rgba(201, 255, 59, 0.14), transparent 70%),
+    var(--ink-2);
+}
+.work__preview .art {
+  border-radius: 0;
+  height: 100%;
+}
+
+/* commerce: a product on a pedestal, orbited */
+.art__ring {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 70%;
+  aspect-ratio: 1;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  translate: -50% -50%;
+  transform: rotateX(72deg);
+  animation: art-spin 9s linear infinite;
+}
+.art__ring--2 {
+  width: 52%;
+  border-color: var(--volt);
+  animation-duration: 6s;
+  animation-direction: reverse;
+}
+@keyframes art-spin {
+  to {
+    transform: rotateX(72deg) rotateZ(360deg);
+  }
+}
+.art__product {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  width: 22%;
+  aspect-ratio: 0.62;
+  translate: -50% 0;
+  border-radius: 40% 40% 12% 12%;
+  background: linear-gradient(160deg, var(--paper), #a39c8f);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.6);
+  animation: art-bob 4s ease-in-out infinite;
+}
+@keyframes art-bob {
+  50% {
+    translate: -50% -6%;
+  }
+}
+.art__pedestal {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  width: 34%;
+  height: 8%;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--volt);
+  box-shadow: 0 0 40px var(--volt-glow);
+}
+.art__tag {
+  position: absolute;
+  right: 8%;
+  top: 12%;
+  padding: 0.4rem 0.65rem;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.6rem;
+}
+
+/* system: three planes stacked isometrically */
+.art--system {
+  perspective: 900px;
+}
+.art__plane {
+  position: absolute;
+  left: 50%;
+  top: calc(26% + var(--i) * 17%);
+  width: 58%;
+  aspect-ratio: 1.6;
+  translate: -50% 0;
+  transform: rotateX(62deg) rotateZ(-38deg);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(241, 235, 224, 0.04);
+  animation: art-lift 4.5s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.6s);
+}
+.art__plane:first-child {
+  border-color: var(--volt);
+  background: rgba(201, 255, 59, 0.08);
+}
+.art__plane em {
+  position: absolute;
+  left: 10%;
+  top: 12%;
+  font-style: normal;
+  font-size: 0.6rem;
+  color: var(--paper);
+}
+@keyframes art-lift {
+  50% {
+    margin-top: -4%;
+  }
+}
+
+/* founder: three slides fanned */
+.art__slide {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56%;
+  aspect-ratio: 16 / 9;
+  translate: -50% -50%;
+  transform: rotate(calc((var(--i) - 1) * 9deg)) translateY(calc((var(--i) - 1) * -6%));
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 16px 30px -12px rgba(0, 0, 0, 0.7);
+  transition: transform 0.6s var(--ease-out);
+}
+.art__slide:last-child {
+  background: var(--volt);
+}
+.art__slide em {
+  position: absolute;
+  left: 8%;
+  bottom: 12%;
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.work__preview.is-visible .art--founder .art__slide {
+  transform: rotate(calc((var(--i) - 1) * 14deg)) translate(calc((var(--i) - 1) * 18%), calc((var(--i) - 1) * -4%));
+}
