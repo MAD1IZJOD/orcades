@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, scrollToTarget } from '../animations/scrollAnimations'
 import { rollText } from '../animations/interactionAnimations'
 import ServiceChapter from './ServiceChapter'
-import { BrowserWorld, SoftwareFlow } from './ServiceVisuals'
+import { BrowserWorld, LivingSystem, SoftwareFlow } from './ServiceVisuals'
 
 const CHAPTERS = [
   {
@@ -45,7 +45,7 @@ const CHAPTERS = [
 ]
 
 // each chapter's visual owns its own motion; `active` tells it when it's on stage
-const VISUALS = [BrowserWorld, SoftwareFlow]
+const VISUALS = [BrowserWorld, SoftwareFlow, LivingSystem]
 
 const pad = (n) => String(n).padStart(2, '0')
 

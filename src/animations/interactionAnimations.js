@@ -1,4 +1,4 @@
-import { animate, createAnimatable, stagger } from 'animejs'
+import { animate, createAnimatable, createTimer, stagger } from 'animejs'
 import { profile } from './scrollAnimations'
 
 /*
@@ -7,7 +7,7 @@ import { profile } from './scrollAnimations'
   animate the same property on the same element.
 */
 
-export { animate, stagger }
+export { animate, createTimer, stagger }
 
 /* slot-machine swap — old text leaves upward, new text arrives from below */
 export function rollText(el, next, { direction = 1 } = {}) {

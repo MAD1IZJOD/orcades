@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap, profile } from '../animations/scrollAnimations'
-import { animate, stagger } from '../animations/interactionAnimations'
+import { animate, createTimer, rollText, stagger } from '../animations/interactionAnimations'
 
 /*
   The four chapter visuals. Each one is a small working demo of the
@@ -222,6 +222,142 @@ export function SoftwareFlow({ active }) {
         ))}
         </div>
       </div>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------
+   03 — a system that keeps going after launch
+   ------------------------------------------------------------------ */
+
+const LOOP = ['Build', 'Monitor', 'Improve', 'Scale']
+const LOOP_R = 140
+const SIGNAL_POINTS = 36
+
+function signalPath(values) {
+  const w = 168
+  const step = w / (values.length - 1)
+  return values.map((v, i) => `${(116 + i * step).toFixed(1)},${(212 - v * 26).toFixed(1)}`).join(' ')
+}
+
+export function LivingSystem({ active }) {
+  const rootRef = useRef(null)
+  const versionRef = useRef(null)
+
+  useEffect(() => {
+    const root = rootRef.current
+    const nodes = root.querySelectorAll('.ls__node')
+    const polyline = root.querySelector('.ls__signal')
+    let current = -1
+    const light = (i) => {
+      if (i === current) return
+      current = i
+      nodes.forEach((n, k) => n.classList.toggle('is-on', k === i))
+      root.classList.toggle('is-scaling', i === 3)
+    }
+
+    if (!active || profile.reduced) {
+      light(profile.reduced ? 0 : -1)
+      return
+    }
+
+    // the pulse orbits; whichever stage it's passing lights up
+    let minor = 0
+    let patch = 0
+    const orbit = animate(root.querySelector('.ls__orbit'), {
+      rotate: { from: 0, to: 360 },
+      duration: 7200,
+      ease: 'linear',
+      loop: true,
+      onUpdate: (self) => {
+        const deg = (self.iterationProgress ?? 0) * 360
+        light(Math.floor(((deg + 45) % 360) / 90))
+      },
+      onLoop: () => {
+        patch += 1
+        if (patch > 2) {
+          patch = 0
+          minor += 1
+        }
+        rollText(versionRef.current, `v1.${minor}.${patch}`)
+      },
+    })
+
+    // a live-looking signal: a smoothed random walk, redrawn a few times a second
+    const values = Array.from({ length: SIGNAL_POINTS }, () => 0)
+    let v = 0
+    const signal = createTimer({
+      duration: 130,
+      loop: true,
+      onLoop: () => {
+        v += (Math.random() - 0.5) * 0.7
+        v *= 0.82
+        values.shift()
+        values.push(Math.max(-1, Math.min(1, v + (Math.random() < 0.06 ? 0.9 : 0))))
+        polyline.setAttribute('points', signalPath(values))
+      },
+    })
+
+    return () => {
+      orbit.pause()
+      signal.pause()
+    }
+  }, [active])
+
+  const initialSignal = signalPath(Array.from({ length: SIGNAL_POINTS }, () => 0))
+
+  return (
+    <div className="ls" ref={rootRef}>
+      <svg
+        viewBox="0 0 400 400"
+        className="ls__svg"
+        role="img"
+        aria-label="A loop of build, monitor, improve and scale, with a pulse travelling around it and a live signal in the middle"
+      >
+        <circle className="ls__echo" cx="200" cy="200" r={LOOP_R} />
+        <circle className="ls__ring" cx="200" cy="200" r={LOOP_R} />
+
+        <g className="ls__orbit">
+          <circle
+            className="ls__trail"
+            cx="200"
+            cy="200"
+            r={LOOP_R}
+            pathLength="100"
+            transform="rotate(-90 200 200)"
+          />
+          <circle className="ls__pulse" cx="200" cy={200 - LOOP_R} r="6" />
+        </g>
+
+        {LOOP.map((label, i) => {
+          const a = (i * Math.PI) / 2 - Math.PI / 2
+          const x = 200 + Math.cos(a) * LOOP_R
+          const y = 200 + Math.sin(a) * LOOP_R
+          return (
+            <g className="ls__node" key={label} transform={`translate(${x} ${y})`}>
+              <g className="ls__node-body">
+                <circle r="34" />
+                <text dy="4" textAnchor="middle">
+                  {label.toUpperCase()}
+                </text>
+              </g>
+            </g>
+          )
+        })}
+
+        <rect className="ls__panel" x="104" y="160" width="192" height="92" rx="10" />
+        <text className="ls__panel-label" x="116" y="178">
+          SIGNAL
+        </text>
+        <polyline className="ls__signal" points={initialSignal} />
+      </svg>
+
+      <p className="ls__version t-label" aria-live="off">
+        <span className="t-muted">release</span>
+        <span className="ls__version-roll">
+          <span ref={versionRef}>v1.0.0</span>
+        </span>
+      </p>
     </div>
   )
 }

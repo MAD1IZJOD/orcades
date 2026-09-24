@@ -912,3 +912,125 @@
 .sf__stage.is-product .sf__chart {
   opacity: 1;
 }
+
+/* ------------------------------------------------------------------
+   visual 03 — living system
+   ------------------------------------------------------------------ */
+
+.ls {
+  position: relative;
+  width: min(100%, 470px);
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+}
+
+.ls__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ls__ring {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 6;
+}
+
+.ls__echo {
+  fill: none;
+  stroke: var(--volt);
+  stroke-width: 1;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+}
+.ls.is-scaling .ls__echo {
+  animation: ls-echo 1.6s var(--ease-out) forwards;
+}
+@keyframes ls-echo {
+  from { opacity: 0.8; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.35); }
+}
+
+.ls__orbit {
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+}
+.ls__trail {
+  fill: none;
+  stroke: var(--volt);
+  stroke-width: 2;
+  stroke-linecap: round;
+  /* a short comet tail that ends right at the pulse */
+  stroke-dasharray: 0 88 12 0;
+  opacity: 0.8;
+}
+.ls__pulse {
+  fill: var(--volt);
+  filter: drop-shadow(0 0 8px var(--volt));
+}
+
+.ls__node-body {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.6s var(--ease-out);
+}
+.ls__node circle {
+  fill: #10120f;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  transition: fill 0.4s, stroke 0.4s;
+}
+.ls__node text {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  fill: var(--paper);
+  transition: fill 0.4s;
+}
+.ls__node.is-on .ls__node-body {
+  transform: scale(1.18);
+}
+.ls__node.is-on circle {
+  fill: var(--volt);
+  stroke: var(--volt);
+}
+.ls__node.is-on text {
+  fill: var(--ink);
+  font-weight: 500;
+}
+
+.ls__panel {
+  fill: rgba(241, 235, 224, 0.03);
+  stroke: var(--line-strong);
+}
+.ls__panel-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  fill: var(--muted);
+}
+.ls__signal {
+  fill: none;
+  stroke: var(--volt);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.ls__version {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.ls__version-roll {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.3em;
+  min-width: 5ch;
+  color: var(--volt);
+}
+.ls__version-roll > span {
+  display: inline-block;
+}
