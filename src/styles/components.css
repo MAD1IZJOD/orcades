@@ -1693,3 +1693,264 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* ------------------------------------------------------------------
+   buttons + chips (shared)
+   ------------------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--paper);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  transition:
+    background var(--dur-fast),
+    color var(--dur-fast),
+    border-color var(--dur-fast),
+    transform 0.5s var(--ease-out);
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn--volt {
+  background: var(--volt);
+  border-color: var(--volt);
+}
+.btn--volt:hover {
+  box-shadow: 0 12px 40px -10px var(--volt-glow);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--paper);
+  border-color: var(--line-strong);
+}
+.btn--ghost:hover {
+  border-color: var(--paper);
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+.chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.chip span {
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.chip:hover span {
+  border-color: var(--paper);
+}
+.chip input:checked + span {
+  background: var(--volt);
+  border-color: var(--volt);
+  color: var(--ink);
+}
+.chip input:focus-visible + span {
+  outline: 2px solid var(--volt);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------
+   contact — the last chapter
+   ------------------------------------------------------------------ */
+
+.contact {
+  min-height: 100svh;
+}
+
+.contact__inner {
+  display: grid;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.contact__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 12.5vw, 14rem);
+  line-height: 0.84;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+.contact__title .split-line:last-child {
+  color: var(--volt);
+}
+.contact__word {
+  display: inline-block;
+}
+
+.contact__email-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding-block: 1rem 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact__email {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.25rem, 4.2vw, 3.6rem);
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+  background: linear-gradient(var(--volt), var(--volt)) 0 100% / 0% 2px no-repeat;
+  transition: background-size 0.6s var(--ease-out), color 0.3s;
+}
+.contact__email:hover,
+.contact__email:focus-visible {
+  background-size: 100% 2px;
+  color: var(--volt);
+}
+
+.contact__copy {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  transition: border-color var(--dur-fast);
+}
+.contact__copy:hover {
+  border-color: var(--paper);
+}
+
+/* brief -------------------------------------------------------------- */
+
+.brief {
+  max-width: 54rem;
+  padding-top: 1rem;
+}
+
+.brief__start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+}
+
+.brief__form {
+  display: grid;
+  gap: 2rem;
+}
+
+.brief__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-dark);
+}
+.brief__steps .is-done {
+  color: var(--muted);
+}
+.brief__steps .is-on {
+  color: var(--volt);
+}
+
+.brief__fieldset {
+  display: grid;
+  gap: 1.25rem;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.brief__q {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+.brief__q:focus {
+  outline: none;
+}
+.brief__q:focus-visible {
+  outline: 2px solid var(--volt);
+}
+
+.brief__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.brief__field {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 28rem;
+}
+
+.brief__input {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(241, 235, 224, 0.04);
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.brief__input::placeholder {
+  color: var(--muted-dark);
+}
+.brief__input:focus {
+  outline: none;
+  border-color: var(--volt);
+  background: rgba(241, 235, 224, 0.07);
+}
+
+.brief__timeline {
+  border: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.brief__summary {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.brief__summary dd {
+  margin-top: 0.3rem;
+  white-space: pre-wrap;
+}
+
+.brief__send {
+  justify-self: start;
+}
+
+.brief__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}

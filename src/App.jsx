@@ -5,6 +5,7 @@ import Manifesto from './components/Manifesto'
 import Services from './components/Services'
 import Work from './components/Work'
 import About from './components/About'
+import Contact from './components/Contact'
 import { shouldPlayOpening } from './animations/heroAnimations'
 import { initSmoothScroll, trackPage, revealOnScroll, ScrollTrigger } from './animations/scrollAnimations'
 
@@ -61,7 +62,7 @@ export default function App() {
         <Services />
         <Work />
         <About />
-        <section className="section wrap" style={{ minHeight: '150vh' }} aria-hidden="true" />
+        <Contact />
       </main>
     </>
   )
