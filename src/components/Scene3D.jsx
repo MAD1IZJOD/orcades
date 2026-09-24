@@ -226,14 +226,15 @@ export default function Scene3D() {
     })
 
     /* loop -------------------------------------------------------- */
-    const clock = new THREE.Clock()
+    const timer = new THREE.Timer()
     const cam = { x: 0, y: 0, z: CAMERA_START }
     const look = new THREE.Vector3()
     let vel = 0
 
-    const render = () => {
-      const dt = Math.min(clock.getDelta(), 0.05)
-      const t = clock.elapsedTime
+    const render = (now) => {
+      timer.update(now)
+      const dt = Math.min(timer.getDelta(), 0.05)
+      const t = timer.getElapsed()
       const p = sceneState.progress
       const out = sceneState.heroOut
 
@@ -283,7 +284,7 @@ export default function Scene3D() {
     const start = () => {
       if (running || reduced) return
       running = true
-      clock.getDelta()
+      timer.reset()
       renderer.setAnimationLoop(render)
     }
     const stop = () => {
@@ -325,6 +326,7 @@ export default function Scene3D() {
       window.removeEventListener('resize', onResize)
       window.removeEventListener('scroll', onReducedScroll)
       disposables.forEach((d) => d.dispose())
+      timer.dispose()
       renderer.dispose()
       renderer.domElement.remove()
     }
