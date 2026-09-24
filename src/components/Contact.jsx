@@ -107,7 +107,7 @@ export default function Contact() {
         <h2 id="contact-title" className="contact__title">
           {['What', 'are we', 'building?'].map((w) => (
             <span className="split-line" key={w}>
-              <span className="contact__word">{w}</span>
+              <span className="contact__word">{w}</span>{' '}
             </span>
           ))}
         </h2>

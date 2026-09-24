@@ -110,7 +110,7 @@ export default function Work() {
           <p className="t-label t-muted">N°03 — Concept studies</p>
           <h2 id="work-title" className="work__title" data-reveal="lines">
             <span className="split-line">
-              <span>What we</span>
+              <span>What we</span>{' '}
             </span>
             <span className="split-line">
               <span>

@@ -157,7 +157,7 @@ export default function Services() {
           <header className="services__intro">
             <p className="t-label t-muted">N°02 — Explore</p>
             <h2 id="services-title" className="services__title" tabIndex={-1}>
-              Four ways
+              Four ways{' '}
               <br />
               <span className="t-outline-volt">into the world.</span>
             </h2>
