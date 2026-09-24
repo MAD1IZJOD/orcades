@@ -40,6 +40,8 @@
   place-items: center;
   perspective: 1100px;
   perspective-origin: 50% 50%;
+  /* the scattered letters must never widen the page */
+  overflow: clip;
 }
 
 .hero__word {
@@ -65,6 +67,15 @@
 }
 .hero__char {
   will-change: transform, opacity;
+}
+/* the centre letter carries a hairline outline that only shows once its fill drains */
+.hero__char:nth-child(4) .hero__in {
+  -webkit-text-stroke: 1.5px var(--volt);
+}
+@supports not (-webkit-text-stroke: 1px black) {
+  .hero__char:nth-child(4) .hero__in {
+    text-shadow: 0 0 1px var(--volt);
+  }
 }
 
 .hero__ui {

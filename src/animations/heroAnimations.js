@@ -81,8 +81,11 @@ export function heroScroll(root) {
       const d = i - mid
       if (d === 0) {
         // the centre letter: the camera passes straight through it
+        // it hollows into a volt outline first, so the fly-through reads as a frame, not a slab
+        const glyph = el.querySelector('.hero__in')
         tl.to(el, { scale: short ? 7 : 11, z: 200, ease: 'power2.in' }, 0)
-        tl.to(el, { autoAlpha: 0, duration: 0.6, ease: 'power1.in' }, 0.1)
+        tl.to(glyph, { color: 'rgba(201, 255, 59, 0)', duration: 0.22 }, 0.04)
+        tl.to(el, { autoAlpha: 0, duration: 0.3, ease: 'power1.in' }, 0.62)
         return
       }
       const dir = Math.sign(d)
