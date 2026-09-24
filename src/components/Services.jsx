@@ -156,7 +156,7 @@ export default function Services() {
         <div className="services__track">
           <header className="services__intro">
             <p className="t-label t-muted">N°02 — Explore</p>
-            <h2 id="services-title" className="services__title">
+            <h2 id="services-title" className="services__title" tabIndex={-1}>
               Four ways
               <br />
               <span className="t-outline-volt">into the world.</span>

@@ -8,8 +8,9 @@ import About from './components/About'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
+import Navigation from './components/Navigation'
 import { shouldPlayOpening } from './animations/heroAnimations'
-import { initSmoothScroll, trackPage, revealOnScroll, ScrollTrigger } from './animations/scrollAnimations'
+import { initSmoothScroll, trackPage, revealOnScroll, ScrollTrigger, smoothLink } from './animations/scrollAnimations'
 
 // three.js is the heaviest thing we ship — it arrives after the words do
 const Scene3D = lazy(() => import('./components/Scene3D'))
@@ -57,7 +58,18 @@ export default function App() {
           <Scene3D />
         </Suspense>
       )}
+      <a
+        className="skip-link"
+        href="#services"
+        onClick={(e) => {
+          smoothLink(e)
+          document.getElementById('services-title')?.focus({ preventScroll: true })
+        }}
+      >
+        Skip to content
+      </a>
       {opening && <Opening onReveal={handleReveal} onDone={handleOpened} />}
+      <Navigation />
       <main id="main">
         <Hero play={revealed} />
         <Manifesto />
