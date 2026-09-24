@@ -68,13 +68,15 @@ export function getLenis() {
   return lenis
 }
 
+// target: selector, element, or an absolute scroll position in px
 export function scrollToTarget(target, { offset = 0, immediate = false } = {}) {
-  const el = typeof target === 'string' ? document.querySelector(target) : target
-  if (!el && target !== 0) return
+  const isNumber = typeof target === 'number'
+  const el = isNumber ? null : typeof target === 'string' ? document.querySelector(target) : target
+  if (!isNumber && !el) return
   if (lenis) {
-    lenis.scrollTo(el ?? 0, { offset, immediate, duration: 1.6 })
+    lenis.scrollTo(isNumber ? target + offset : el, { offset: isNumber ? 0 : offset, immediate, duration: 1.6 })
   } else {
-    const top = el ? el.getBoundingClientRect().top + window.scrollY + offset : 0
+    const top = isNumber ? target + offset : el.getBoundingClientRect().top + window.scrollY + offset
     window.scrollTo({ top, behavior: immediate || profile.reduced ? 'auto' : 'smooth' })
   }
 }

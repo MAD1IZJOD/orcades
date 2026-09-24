@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import Hero from './components/Hero'
 import Opening from './components/Opening'
 import Manifesto from './components/Manifesto'
+import Services from './components/Services'
 import { shouldPlayOpening } from './animations/heroAnimations'
 import { initSmoothScroll, trackPage, revealOnScroll, ScrollTrigger } from './animations/scrollAnimations'
 
@@ -55,6 +56,7 @@ export default function App() {
       <main id="main">
         <Hero play={revealed} />
         <Manifesto />
+        <Services />
         <section className="section wrap" style={{ minHeight: '150vh' }} aria-hidden="true" />
       </main>
     </>
