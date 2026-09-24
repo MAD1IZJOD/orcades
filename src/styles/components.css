@@ -1595,3 +1595,101 @@
 .work__preview.is-visible .art--founder .art__slide {
   transform: rotate(calc((var(--i) - 1) * 14deg)) translate(calc((var(--i) - 1) * 18%), calc((var(--i) - 1) * -4%));
 }
+
+/* ------------------------------------------------------------------
+   about
+   ------------------------------------------------------------------ */
+
+.about__grid {
+  display: grid;
+  gap: clamp(2.5rem, 7vh, 5rem);
+}
+
+.about__statement {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-h2);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  max-width: 22ch;
+}
+.about__statement em {
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
+}
+.about__statement em:last-child {
+  color: var(--volt);
+}
+
+.about__sum {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 8.4vw, 9rem);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  overflow: clip;
+  padding-block: 0.1em;
+}
+.about__term--b {
+  align-self: center;
+  color: var(--ink);
+  -webkit-text-stroke: 3px var(--paper);
+  paint-order: stroke fill;
+}
+.about__term--c {
+  align-self: flex-end;
+}
+.about__op {
+  align-self: center;
+  display: inline-block;
+  font-weight: 300;
+  font-size: 0.5em;
+  line-height: 1;
+  color: var(--volt);
+}
+.about__result {
+  align-self: flex-end;
+  margin-top: 0.2em;
+  color: var(--volt);
+}
+.about__eq {
+  font-weight: 300;
+}
+
+.about__principles {
+  display: grid;
+  gap: 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 2.5rem;
+}
+.about__principles li {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+}
+.about__principles h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .about__principles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  .about__principles {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
