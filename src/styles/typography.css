@@ -86,10 +86,16 @@
   color: var(--volt);
 }
 
-/* outlined type — used for echoes and ghosts of the main word */
+/*
+  Outlined type.
+  Unbounded is a variable font with overlapping contours, so a plain stroke
+  draws its construction lines. Painting a double-width stroke *under* a fill
+  that matches the surface keeps only the clean outer edge.
+*/
 .t-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--line-strong);
+  color: var(--outline-fill, var(--ink));
+  -webkit-text-stroke: 2px var(--line-strong);
+  paint-order: stroke fill;
 }
 
 /* split-text helpers */
