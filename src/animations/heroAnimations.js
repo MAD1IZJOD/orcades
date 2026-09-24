@@ -1,4 +1,4 @@
-import { gsap, profile, sceneState } from './scrollAnimations'
+import { gsap, profile, sceneState, ScrollTrigger } from './scrollAnimations'
 
 /*
   The hero has three layers of motion that never fight each other:
@@ -57,6 +57,17 @@ export function heroScroll(root) {
     const mid = (chars.length - 1) / 2
     const short = profile.small
 
+    // reduced motion: no pin, no flight — the page just scrolls
+    if (profile.reduced) {
+      ScrollTrigger.create({
+        trigger: root,
+        start: 'top top',
+        end: 'bottom top',
+        onUpdate: (self) => (sceneState.heroOut = self.progress),
+      })
+      return
+    }
+
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
@@ -64,18 +75,12 @@ export function heroScroll(root) {
         start: 'top top',
         end: short ? '+=70%' : '+=135%',
         pin: stage,
-        scrub: profile.reduced ? true : 0.9,
+        scrub: 0.9,
         onUpdate: (self) => (sceneState.heroOut = self.progress),
         onLeave: () => (sceneState.heroOut = 1),
         onLeaveBack: () => (sceneState.heroOut = 0),
       },
     })
-
-    if (profile.reduced) {
-      // no flight — just let the wordmark step aside
-      tl.to(root.querySelector('.hero__word'), { autoAlpha: 0.08 })
-      return
-    }
 
     chars.forEach((el, i) => {
       const d = i - mid
