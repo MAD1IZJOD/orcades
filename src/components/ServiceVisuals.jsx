@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { gsap, profile } from '../animations/scrollAnimations'
 import { animate, createTimer, rollText, stagger } from '../animations/interactionAnimations'
 
@@ -358,6 +358,188 @@ export function LivingSystem({ active }) {
           <span ref={versionRef}>v1.0.0</span>
         </span>
       </p>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------
+   04 — a deck that tells the story one slide at a time
+   ------------------------------------------------------------------ */
+
+const SLIDES = [
+  { title: 'Problem', sub: "What's broken, and for whom." },
+  { title: 'Solution', sub: 'The shift your product makes.' },
+  { title: 'Market', sub: 'Who needs this, and why now.' },
+  { title: 'Product', sub: 'What it looks like in their hands.' },
+  { title: 'Business', sub: 'How it earns, and how it grows.' },
+  { title: 'Ask', sub: 'What you need to get there.' },
+]
+
+function SlideArt({ kind }) {
+  switch (kind) {
+    case 'Problem':
+      return <polyline points="4,14 20,22 32,17 48,40 62,33 80,58 96,50 116,72" />
+    case 'Solution':
+      return (
+        <>
+          <line x1="6" y1="40" x2="58" y2="40" />
+          <polyline points="50,32 58,40 50,48" />
+          <circle cx="88" cy="40" r="24" />
+          <polyline className="fill-none accent" points="77,40 85,48 100,31" />
+        </>
+      )
+    case 'Market':
+      return (
+        <>
+          <circle cx="60" cy="40" r="36" />
+          <circle cx="60" cy="40" r="24" />
+          <circle className="solid" cx="60" cy="40" r="11" />
+        </>
+      )
+    case 'Product':
+      return (
+        <>
+          <rect x="6" y="10" width="72" height="48" rx="4" />
+          <line x1="0" y1="64" x2="84" y2="64" />
+          <rect x="92" y="18" width="24" height="46" rx="5" />
+          <rect className="solid" x="14" y="18" width="24" height="16" rx="2" />
+        </>
+      )
+    case 'Business':
+      return (
+        <>
+          <rect x="8" y="58" width="18" height="16" />
+          <rect x="36" y="46" width="18" height="28" />
+          <rect x="64" y="30" width="18" height="44" />
+          <rect className="solid" x="92" y="10" width="18" height="64" />
+        </>
+      )
+    default:
+      return (
+        <>
+          <circle cx="60" cy="40" r="32" />
+          <line className="accent" x1="46" y1="54" x2="74" y2="26" />
+          <polyline className="accent" points="56,26 74,26 74,44" />
+        </>
+      )
+  }
+}
+
+export function DeckStack({ active }) {
+  const rootRef = useRef(null)
+  const counterRef = useRef(null)
+  const busy = useRef(false)
+  const [top, setTop] = useState(0)
+  const [hold, setHold] = useState(false)
+  const n = SLIDES.length
+
+  const next = useCallback(() => {
+    if (busy.current) return
+    if (profile.reduced) {
+      setTop((t) => (t + 1) % n)
+      return
+    }
+    busy.current = true
+    const card = rootRef.current.querySelector('.deck__slide.is-top .deck__card')
+    animate(card, {
+      translateY: { to: '-118%' },
+      rotate: { to: -7 },
+      opacity: { to: 0 },
+      duration: 480,
+      ease: 'in(3)',
+      onComplete: () => {
+        setTop((t) => (t + 1) % n)
+        // it lands quietly at the back of the stack
+        animate(card, {
+          translateY: { to: '0%' },
+          rotate: { to: 0 },
+          opacity: { to: 1 },
+          duration: 700,
+          delay: 120,
+          ease: 'outExpo',
+          onComplete: () => (busy.current = false),
+        })
+      },
+    })
+  }, [n])
+
+  useEffect(() => {
+    rollText(counterRef.current, String(top + 1).padStart(2, '0'))
+  }, [top])
+
+  useEffect(() => {
+    if (!active || hold || profile.reduced) return
+    const id = setInterval(next, 2400)
+    return () => clearInterval(id)
+  }, [active, hold, next])
+
+  return (
+    <div
+      className="deck"
+      ref={rootRef}
+      onPointerEnter={() => setHold(true)}
+      onPointerLeave={() => setHold(false)}
+      onFocus={() => setHold(true)}
+      onBlur={() => setHold(false)}
+    >
+      <div className="deck__stack" aria-live="polite" aria-atomic="true">
+        {SLIDES.map((s, i) => {
+          const d = (i - top + n) % n
+          return (
+            <div
+              key={s.title}
+              className={`deck__slide${d === 0 ? ' is-top' : ''}`}
+              style={{ '--d': d }}
+              aria-hidden={d !== 0}
+            >
+              <div className="deck__card">
+                <div className="deck__head t-label">
+                  <span>
+                    {String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
+                  </span>
+                  <span>Your startup</span>
+                </div>
+                <div className="deck__body">
+                  <div>
+                    <p className="deck__title">{s.title}</p>
+                    <p className="deck__sub">{s.sub}</p>
+                  </div>
+                  <svg className="deck__art" viewBox="0 0 120 80" aria-hidden="true">
+                    <SlideArt kind={s.title} />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="deck__controls">
+        <ol className="deck__story" aria-label="Deck structure">
+          {SLIDES.map((s, i) => (
+            <li key={s.title}>
+              <button
+                type="button"
+                className={i === top ? 'is-on' : ''}
+                aria-current={i === top ? 'step' : undefined}
+                onClick={() => {
+                  setHold(true)
+                  setTop(i)
+                }}
+                data-cursor="hover"
+              >
+                {s.title}
+              </button>
+            </li>
+          ))}
+        </ol>
+        <button type="button" className="deck__next" onClick={next} data-cursor="cta">
+          <span className="deck__count" aria-hidden="true">
+            <span ref={counterRef}>01</span>
+          </span>
+          Next slide <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
   )
 }

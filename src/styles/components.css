@@ -1034,3 +1034,172 @@
 .ls__version-roll > span {
   display: inline-block;
 }
+
+/* ------------------------------------------------------------------
+   visual 04 — deck stack
+   ------------------------------------------------------------------ */
+
+.deck {
+  width: min(100%, 600px);
+  display: grid;
+  gap: 2.25rem;
+}
+
+.deck__stack {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  perspective: 1600px;
+  transform-style: preserve-3d;
+  margin-top: 60px;
+}
+
+.deck__slide {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(var(--d) * -15px), calc(var(--d) * -55px));
+  opacity: calc(1 - var(--d) * 0.17);
+  z-index: calc(10 - var(--d));
+  transition:
+    transform 0.8s var(--ease-out),
+    opacity 0.8s var(--ease-out);
+}
+
+.deck__card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 2.4vw, 1.75rem);
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 30px 60px -30px rgba(13, 12, 10, 0.6);
+  border: 1px solid rgba(241, 235, 224, 0.08);
+}
+
+.deck__head {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.deck__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: end;
+  gap: 1rem;
+}
+
+.deck__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3.4vw, 3rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+.deck__sub {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: clamp(0.8rem, 1vw, 0.95rem);
+}
+
+.deck__art {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.deck__art * {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.deck__art .solid {
+  fill: var(--volt);
+  stroke: var(--volt);
+}
+.deck__art .accent {
+  stroke: var(--volt);
+  stroke-width: 2.2;
+}
+
+.deck__controls {
+  display: grid;
+  gap: 1rem;
+}
+
+.deck__story {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  counter-reset: story;
+}
+.deck__story li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.deck__story li + li::before {
+  content: '→';
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
+.deck__story button {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: background var(--dur-fast), border-color var(--dur-fast);
+}
+.deck__story button:hover {
+  border-color: var(--c-line);
+}
+.deck__story button.is-on {
+  background: var(--ink);
+  color: var(--volt);
+}
+
+.deck__next {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.4rem 0.9rem 0.9rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.deck__next:focus-visible {
+  outline-color: var(--ink);
+}
+.deck__count {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--volt);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  overflow: hidden;
+}
+.deck__count > span {
+  display: inline-block;
+}
+
+.chapter--volt :focus-visible,
+.chapter--paper :focus-visible {
+  outline-color: var(--ink);
+}
