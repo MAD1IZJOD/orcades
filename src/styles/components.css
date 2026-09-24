@@ -21,3 +21,135 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+/* ------------------------------------------------------------------
+   hero — ENTER
+   ------------------------------------------------------------------ */
+
+.hero {
+  --hero-size: clamp(3.1rem, 13.6vw, 15.5rem);
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.hero__stage {
+  position: relative;
+  height: 100svh;
+  min-height: 520px;
+  display: grid;
+  place-items: center;
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
+}
+
+.hero__word {
+  display: flex;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--hero-size);
+  line-height: 0.82;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  color: var(--paper);
+  transform-style: preserve-3d;
+  user-select: none;
+  /* optical centring — Unbounded's negative tracking leaves the right side light */
+  margin-right: -0.05em;
+}
+
+.hero__char,
+.hero__glyph,
+.hero__in {
+  display: inline-block;
+  transform-style: preserve-3d;
+}
+.hero__char {
+  will-change: transform, opacity;
+}
+
+.hero__ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__kicker {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - var(--hero-size) * 0.5 - 2.6rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: var(--paper);
+}
+
+.hero__line {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--hero-size) * 0.5 + 1.2rem);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-h3);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.hero__line em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--volt);
+}
+
+.hero__foot {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.hero__scroll-line {
+  display: inline-block;
+  width: 3.5rem;
+  height: 1px;
+  background: var(--paper);
+  transform-origin: left;
+  animation: scroll-line 2.4s var(--ease-in-out) infinite;
+}
+@keyframes scroll-line {
+  0% { transform: scaleX(0); transform-origin: left; }
+  45% { transform: scaleX(1); transform-origin: left; }
+  55% { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+.hero__echo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  color: var(--volt);
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .hero__stage {
+    perspective: 700px;
+  }
+  .hero__line {
+    font-size: 1.05rem;
+  }
+  .hero__foot > p:first-child {
+    display: none;
+  }
+}

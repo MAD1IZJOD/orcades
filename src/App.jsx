@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import Hero from './components/Hero'
 import { initSmoothScroll, trackPage, revealOnScroll, ScrollTrigger } from './animations/scrollAnimations'
 
 // three.js is the heaviest thing we ship — it arrives after the words do
@@ -44,7 +45,8 @@ export default function App() {
         </Suspense>
       )}
       <main id="main">
-        <h1>ORCADES</h1>
+        <Hero play />
+        <section className="section wrap" style={{ minHeight: '150vh' }} aria-hidden="true" />
       </main>
     </>
   )
