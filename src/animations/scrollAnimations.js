@@ -81,6 +81,15 @@ export function scrollToTarget(target, { offset = 0, immediate = false } = {}) {
   }
 }
 
+// click handler for in-page anchors: plain links without JS, a glide with it
+export function smoothLink(e) {
+  const href = e.currentTarget.getAttribute('href')
+  if (!href?.startsWith('#')) return
+  e.preventDefault()
+  scrollToTarget(href === '#top' ? 0 : href)
+  history.replaceState(null, '', href === '#top' ? window.location.pathname : href)
+}
+
 export function lockScroll(locked) {
   if (lenis) locked ? lenis.stop() : lenis.start()
   document.documentElement.style.overflow = locked ? 'hidden' : ''
