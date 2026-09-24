@@ -128,31 +128,50 @@ export default function Scene3D() {
     const moonMat = track(new THREE.MeshBasicMaterial({ color: VOLT }))
     const moonPaper = track(new THREE.MeshBasicMaterial({ color: PAPER }))
 
-    /* the orrery -------------------------------------------------- */
-    const orrery = new THREE.Group()
-    scene.add(orrery)
-
-    const core = wire(new THREE.IcosahedronGeometry(2.3, 1), lineMid)
-    const coreInner = wire(new THREE.OctahedronGeometry(1.1, 0), lineVolt)
-    track(core.geometry)
-    track(coreInner.geometry)
-    orrery.add(core, coreInner)
-
+    /* the orrery — one where you enter, one where the story ends ---- */
     const moonGeo = track(new THREE.SphereGeometry(0.09, 12, 12))
-    const rings = [
-      { r: 4.1, tilt: [1.2, 0.2, 0], speed: 0.22, mat: moonMat },
-      { r: 5.4, tilt: [1.45, -0.45, 0.3], speed: -0.14, mat: moonPaper },
-      { r: 7.0, tilt: [1.05, 0.6, -0.2], speed: 0.09, mat: moonMat },
-    ].map((cfg) => {
-      const pivot = new THREE.Group()
-      pivot.rotation.set(...cfg.tilt)
-      const ringGeo = track(circle(cfg.r))
-      const ring = new THREE.Line(ringGeo, lineSoft)
-      const moon = new THREE.Mesh(moonGeo, cfg.mat)
-      pivot.add(ring, moon)
-      orrery.add(pivot)
-      return { ...cfg, pivot, moon, angle: Math.random() * Math.PI * 2, baseTilt: cfg.tilt }
-    })
+    const makeOrrery = () => {
+      const group = new THREE.Group()
+      const core = wire(new THREE.IcosahedronGeometry(2.3, 1), lineMid)
+      const coreInner = wire(new THREE.OctahedronGeometry(1.1, 0), lineVolt)
+      track(core.geometry)
+      track(coreInner.geometry)
+      group.add(core, coreInner)
+      const rings = [
+        { r: 4.1, tilt: [1.2, 0.2, 0], speed: 0.22, mat: moonMat },
+        { r: 5.4, tilt: [1.45, -0.45, 0.3], speed: -0.14, mat: moonPaper },
+        { r: 7.0, tilt: [1.05, 0.6, -0.2], speed: 0.09, mat: moonMat },
+      ].map((cfg) => {
+        const pivot = new THREE.Group()
+        pivot.rotation.set(...cfg.tilt)
+        const ring = new THREE.Line(track(circle(cfg.r)), lineSoft)
+        const moon = new THREE.Mesh(moonGeo, cfg.mat)
+        pivot.add(ring, moon)
+        group.add(pivot)
+        return { ...cfg, pivot, moon, angle: Math.random() * Math.PI * 2, baseTilt: cfg.tilt }
+      })
+      scene.add(group)
+      return { group, core, coreInner, rings }
+    }
+
+    // open: 0 = closed around the wordmark, 1 = swung toward the viewer
+    const spinOrrery = (o, t, dt, wake, open) => {
+      o.core.rotation.x = t * 0.08 + sceneState.pointerY * 0.4
+      o.core.rotation.y = t * 0.12 * wake + sceneState.pointerX * 0.6
+      o.coreInner.rotation.y = -t * 0.4 * wake
+      o.coreInner.rotation.z = t * 0.25
+      o.rings.forEach((r) => {
+        r.angle += dt * r.speed * wake
+        r.moon.position.set(Math.cos(r.angle) * r.r, Math.sin(r.angle) * r.r, 0)
+        r.pivot.rotation.x = r.baseTilt[0] * (1 - open * 0.55)
+        r.pivot.rotation.y = r.baseTilt[1] + open * 0.4
+      })
+    }
+
+    const entry = makeOrrery()
+    const exit = makeOrrery()
+    exit.group.position.set(0, 0.5, CAMERA_START - CAMERA_TRAVEL - 22)
+    exit.group.rotation.z = -0.4
 
     /* the corridor of dust ---------------------------------------- */
     const count = reduced ? 700 : low ? (profile.small ? 650 : 1100) : 2400
@@ -210,7 +229,7 @@ export default function Scene3D() {
       track(mesh.geometry)
       const side = i % 2 === 0 ? 1 : -1
       mesh.position.set(
-        side * (6 + Math.random() * 5),
+        side * (9 + Math.random() * 5),
         (Math.random() - 0.5) * 7,
         -14 - i * (CAMERA_TRAVEL / formDefs.length) - Math.random() * 6,
       )
@@ -252,21 +271,13 @@ export default function Scene3D() {
       dustMat.uniforms.uTime.value = t
       dustMat.uniforms.uVelocity.value = vel
 
-      // the orrery wakes as the wordmark breaks apart
+      // the entry orrery wakes as the wordmark breaks apart
       const wake = 1 + out * 0.9
-      core.rotation.x = t * 0.08 + sceneState.pointerY * 0.4
-      core.rotation.y = t * 0.12 * wake + sceneState.pointerX * 0.6
-      coreInner.rotation.y = -t * 0.4 * wake
-      coreInner.rotation.z = t * 0.25
-      orrery.scale.setScalar(1 + out * 0.55)
-      orrery.rotation.z = out * 0.6
-      rings.forEach((r) => {
-        r.angle += dt * r.speed * wake
-        r.moon.position.set(Math.cos(r.angle) * r.r, Math.sin(r.angle) * r.r, 0)
-        // rings swing open toward the viewer as the hero releases
-        r.pivot.rotation.x = r.baseTilt[0] * (1 - out * 0.55)
-        r.pivot.rotation.y = r.baseTilt[1] + out * 0.4
-      })
+      spinOrrery(entry, t, dt, wake, out)
+      entry.group.scale.setScalar(1 + out * 0.55)
+      entry.group.rotation.z = out * 0.6
+      // the exit orrery is already open, waiting at the end of the corridor
+      spinOrrery(exit, t, dt, 1.2, 0.8)
 
       forms.forEach((m) => {
         const s = m.userData.spin
