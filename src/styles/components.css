@@ -153,3 +153,73 @@
     display: none;
   }
 }
+
+/* ------------------------------------------------------------------
+   opening title card
+   ------------------------------------------------------------------ */
+
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-opening);
+  pointer-events: none;
+}
+
+.opening__half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: var(--ink);
+}
+.opening__half--top {
+  top: 0;
+}
+.opening__half--bottom {
+  bottom: 0;
+}
+
+.opening__words {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.opening__word {
+  grid-area: 1 / 1;
+  display: flex;
+  overflow: hidden;
+  padding-block: 0.05em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 11vw, 11rem);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+.opening__word:nth-child(2) {
+  color: var(--volt);
+}
+
+.opening__meta {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.opening__bar {
+  flex: 1;
+  height: 1px;
+  background: var(--volt);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (max-width: 767px) {
+  .opening__meta .t-muted {
+    display: none;
+  }
+}

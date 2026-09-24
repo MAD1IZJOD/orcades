@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { heroIntro, heroPointer, heroScroll } from '../animations/heroAnimations'
 
 const WORD = 'ORCADES'.split('')
@@ -21,7 +21,8 @@ export default function Hero({ play }) {
     }
   }, [])
 
-  useEffect(() => {
+  // layout effect: hide the letters before the first paint, not after
+  useLayoutEffect(() => {
     if (!play) return
     const tl = heroIntro(ref.current)
     return () => tl.kill()

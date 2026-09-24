@@ -8,6 +8,18 @@ import { gsap, profile, sceneState } from './scrollAnimations'
   the intro itself lives on the innermost .hero__in
 */
 
+export const OPENING_KEY = 'orcades:opened'
+
+// the title card plays once per session, and never for reduced motion
+export function shouldPlayOpening() {
+  if (profile.reduced) return false
+  try {
+    return !sessionStorage.getItem(OPENING_KEY)
+  } catch {
+    return true
+  }
+}
+
 export function heroIntro(root) {
   const chars = root.querySelectorAll('.hero__in')
   const rest = root.querySelectorAll('[data-hero-fade]')
