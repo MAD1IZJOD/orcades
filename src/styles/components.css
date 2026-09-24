@@ -395,8 +395,9 @@
   color: var(--c-fg);
   overflow: clip;
 }
+/* the first world stays open to the universe behind it */
 .chapter--ink {
-  --c-bg: #0f0e0c;
+  --c-bg: transparent;
 }
 .chapter--paper {
   --c-bg: var(--paper);
@@ -615,5 +616,163 @@
   }
   .services__hud {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   visual 01 — browser world
+   ------------------------------------------------------------------ */
+
+.bw {
+  width: min(100%, 620px);
+  perspective: 1400px;
+}
+
+.bw__tilt {
+  transform-style: preserve-3d;
+}
+
+.bw__window {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(-16deg) rotateX(7deg);
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: #16150f;
+  box-shadow: 0 60px 120px -40px rgba(0, 0, 0, 0.8);
+  animation: bw-float 7s ease-in-out infinite;
+}
+@keyframes bw-float {
+  50% {
+    transform: rotateY(-12deg) rotateX(5deg) translateY(-10px);
+  }
+}
+
+.bw__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+.bw__dots {
+  display: flex;
+  gap: 6px;
+}
+.bw__dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+.bw__dots i:first-child {
+  background: var(--volt);
+}
+.bw__url {
+  flex: 1;
+  max-width: 60%;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(241, 235, 224, 0.06);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.bw__screen {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  transform-style: preserve-3d;
+}
+
+.bw__layer {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(calc(var(--z) * 0.12px));
+  transition: transform 1.4s var(--ease-out);
+  pointer-events: none;
+}
+.chapter.is-active .bw__layer {
+  transform: translateZ(calc(var(--z) * 1px));
+}
+/* stagger the separation so it reads as depth, not a jump */
+.chapter.is-active .bw__layer--orb { transition-delay: 0.05s; }
+.chapter.is-active .bw__layer--word { transition-delay: 0.1s; }
+.chapter.is-active .bw__layer--chips { transition-delay: 0.18s; }
+.chapter.is-active .bw__layer--cursor { transition-delay: 0.26s; }
+
+.bw__layer--grid {
+  overflow: hidden;
+  border-radius: 0 0 14px 14px;
+  background:
+    linear-gradient(rgba(201, 255, 59, 0.12) 1px, transparent 1px) 0 0 / 100% 12.5%,
+    linear-gradient(90deg, rgba(201, 255, 59, 0.12) 1px, transparent 1px) 0 0 / 8.33% 100%;
+  mask-image: linear-gradient(to bottom, transparent, #000 40%);
+}
+
+.bw__layer--orb {
+  display: grid;
+  place-items: center;
+}
+.bw__orb {
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #efffb8, var(--volt) 35%, #4f6b00 75%, transparent 76%);
+  box-shadow: 0 0 80px var(--volt-glow);
+  translate: 0 -8%;
+}
+
+.bw__layer--word {
+  display: grid;
+  place-items: center;
+}
+.bw__layer--word span {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6.4vw, 6rem);
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--paper);
+  translate: 0 18%;
+}
+
+.bw__chip {
+  position: absolute;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.bw__chip--a { left: 6%; top: 14%; }
+.bw__chip--b { right: 8%; top: 30%; background: var(--volt); }
+.bw__chip--c { left: 14%; bottom: 12%; background: transparent; color: var(--paper); border: 1px solid var(--line-strong); }
+
+.bw__cursor {
+  position: absolute;
+  left: 62%;
+  top: 58%;
+  color: var(--paper);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+  animation: bw-cursor 5.5s var(--ease-in-out) infinite;
+}
+@keyframes bw-cursor {
+  0%, 100% { translate: 0 0; }
+  30% { translate: -90px -40px; }
+  60% { translate: 40px -70px; }
+}
+
+@media (max-width: 1023px) {
+  .bw__window {
+    transform: rotateY(-8deg) rotateX(5deg);
+    animation: none;
+  }
+  .bw__layer {
+    transform: translateZ(calc(var(--z) * 0.5px));
   }
 }
