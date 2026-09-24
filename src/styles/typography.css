@@ -1,0 +1,112 @@
+/* ------------------------------------------------------------------
+   ORCADES — type system
+   Unbounded carries the voice, Instrument Sans carries the reading,
+   JetBrains Mono is the machine talking.
+   ------------------------------------------------------------------ */
+
+:root {
+  --fs-mega: clamp(4.2rem, 17.5vw, 19rem);
+  --fs-display: clamp(2.6rem, 8.4vw, 8.5rem);
+  --fs-h1: clamp(2.2rem, 6vw, 5.6rem);
+  --fs-h2: clamp(1.8rem, 4.2vw, 3.8rem);
+  --fs-h3: clamp(1.25rem, 2.2vw, 1.9rem);
+  --fs-lead: clamp(1.1rem, 1.6vw, 1.45rem);
+  --fs-body: clamp(0.98rem, 1.05vw, 1.08rem);
+  --fs-small: 0.875rem;
+  --fs-label: 0.72rem;
+}
+
+.t-mega,
+.t-display,
+.t-h1,
+.t-h2,
+.t-h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.t-mega {
+  font-size: var(--fs-mega);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+}
+
+.t-display {
+  font-size: var(--fs-display);
+}
+
+.t-h1 {
+  font-size: var(--fs-h1);
+}
+
+.t-h2 {
+  font-size: var(--fs-h2);
+  line-height: 0.98;
+}
+
+.t-h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.t-light {
+  font-weight: 300;
+}
+
+.t-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  max-width: 34ch;
+}
+
+.t-body {
+  font-size: var(--fs-body);
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+.t-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.t-muted {
+  color: var(--muted);
+}
+
+.t-volt {
+  color: var(--volt);
+}
+
+/* outlined type — used for echoes and ghosts of the main word */
+.t-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-strong);
+}
+
+/* split-text helpers */
+.split-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.split-line > span {
+  display: inline-block;
+  will-change: transform;
+}
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.split-char {
+  display: inline-block;
+}
