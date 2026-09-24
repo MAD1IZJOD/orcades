@@ -7,6 +7,7 @@ import Work from './components/Work'
 import About from './components/About'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import CustomCursor from './components/CustomCursor'
 import { shouldPlayOpening } from './animations/heroAnimations'
 import { initSmoothScroll, trackPage, revealOnScroll, ScrollTrigger } from './animations/scrollAnimations'
 
@@ -66,6 +67,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <CustomCursor />
     </>
   )
 }
