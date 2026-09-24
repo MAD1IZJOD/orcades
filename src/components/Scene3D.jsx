@@ -119,11 +119,13 @@ export default function Scene3D() {
     const lineSoft = track(
       new THREE.LineBasicMaterial({ color: PAPER, transparent: true, opacity: 0.16 }),
     )
+    // on phones the copy fills the screen, so the geometry steps back
+    const quiet = profile.small ? 0.55 : 1
     const lineMid = track(
-      new THREE.LineBasicMaterial({ color: PAPER, transparent: true, opacity: 0.32 }),
+      new THREE.LineBasicMaterial({ color: PAPER, transparent: true, opacity: 0.32 * quiet }),
     )
     const lineVolt = track(
-      new THREE.LineBasicMaterial({ color: VOLT, transparent: true, opacity: 0.55 }),
+      new THREE.LineBasicMaterial({ color: VOLT, transparent: true, opacity: 0.55 * quiet }),
     )
     const moonMat = track(new THREE.MeshBasicMaterial({ color: VOLT }))
     const moonPaper = track(new THREE.MeshBasicMaterial({ color: PAPER }))
